@@ -9,8 +9,8 @@ type Env = {
 };
 
 type Variables = {
-  userId: string;
-  user: { sub: string; username: string; is_admin: number; iat: number; exp: number };
+  userId: string | undefined;
+  user: { sub: string; username: string; is_admin: number; iat: number; exp: number } | undefined;
 };
 
 const notifications = new Hono<{ Bindings: Env; Variables: Variables }>();
@@ -70,7 +70,6 @@ notifications.get('/', authMiddleware, async (c) => {
 // POST /notifications/read-all — mark all as read
 notifications.post('/read-all', authMiddleware, async (c) => {
   const userId = c.get('userId');
-  const now = Math.floor(Date.now() / 1000);
 
   await c.env.DB.prepare(
     'UPDATE notifications SET is_read = 1 WHERE user_id = ? AND is_read = 0'

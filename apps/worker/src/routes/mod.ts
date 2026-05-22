@@ -9,8 +9,8 @@ type Env = {
 };
 
 type Variables = {
-  userId: string;
-  user: { sub: string; username: string; is_admin: number; iat: number; exp: number };
+  userId: string | undefined;
+  user: { sub: string; username: string; is_admin: number; iat: number; exp: number } | undefined;
 };
 
 const mod = new Hono<{ Bindings: Env; Variables: Variables }>();
