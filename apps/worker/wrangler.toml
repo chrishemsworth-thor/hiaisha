@@ -1,0 +1,16 @@
+name = "hiaisha-worker"
+main = "src/index.ts"
+compatibility_date = "2024-01-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "hiaisha"
+database_id = "placeholder-replace-with-real-id"
+
+[[r2_buckets]]
+binding = "IMAGES"
+bucket_name = "hiaisha-images"
+
+[vars]
+JWT_SECRET = "change-me-in-production"
+FRONTEND_URL = "http://localhost:3000"
