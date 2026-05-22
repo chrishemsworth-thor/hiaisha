@@ -1,6 +1,6 @@
 import { Hono } from 'hono';
 import { generateId } from '../utils/id';
-import { signJWT, authMiddleware } from '../middleware/auth';
+import { signJWT, verifyJWT } from '../middleware/auth';
 
 type Env = {
   DB: D1Database;
@@ -177,17 +177,15 @@ auth.get('/me', async (c) => {
     return c.json({ success: false, error: 'Unauthorized' }, 401);
   }
 
-  // Run auth middleware inline
-  await authMiddleware(c as never, async () => {});
-
-  const userId = c.get('userId' as never) as string | undefined;
-  if (!userId) {
-    return c.json({ success: false, error: 'Unauthorized' }, 401);
+  const token = authHeader.slice(7);
+  const payload = await verifyJWT(token, c.env.JWT_SECRET);
+  if (!payload) {
+    return c.json({ success: false, error: 'Invalid or expired token' }, 401);
   }
 
   const user = await c.env.DB.prepare(
     'SELECT id, username, email, email_verified, avatar_url, bio, karma, is_admin, created_at, updated_at FROM users WHERE id = ?'
-  ).bind(userId).first();
+  ).bind(payload.sub).first();
 
   if (!user) {
     return c.json({ success: false, error: 'User not found' }, 404);
