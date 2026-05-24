@@ -16,6 +16,8 @@ export type Env = {
   IMAGES: R2Bucket;
   JWT_SECRET: string;
   FRONTEND_URL: string;
+  MAILGUN_API_KEY: string;
+  MAILGUN_DOMAIN: string;
 };
 
 const app = new Hono<{ Bindings: Env }>();
