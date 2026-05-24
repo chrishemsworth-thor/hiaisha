@@ -74,8 +74,31 @@ export const getUserComments = (username: string, cursor?: string) => {
   const q = cursor ? `?cursor=${cursor}` : '';
   return request<ApiResponse<PaginatedResponse<Comment>>>(`/users/${username}/comments${q}`);
 };
-export const updateProfile = (body: { bio?: string; avatar_url?: string }) =>
+export const updateProfile = (body: { bio?: string; avatar_url?: string; notification_emails?: number }) =>
   request<ApiResponse<User>>('/users/me', { method: 'PATCH', body: JSON.stringify(body) });
+
+export const uploadAvatar = async (file: File): Promise<User> => {
+  const token = getToken();
+  const formData = new FormData();
+  formData.append('file', file);
+  const res = await fetch(`${BASE}/upload/avatar`, {
+    method: 'POST',
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+    body: formData,
+  });
+  const json = await res.json();
+  if (!res.ok) throw new Error(json.error ?? 'Avatar upload failed');
+  return json.data as User;
+};
+
+export const changePassword = (body: { old_password: string; new_password: string }) =>
+  request<ApiResponse<null>>('/auth/change-password', { method: 'POST', body: JSON.stringify(body) });
+
+export const updateNotificationSettings = (enabled: boolean) =>
+  request<ApiResponse<User>>('/users/me', { method: 'PATCH', body: JSON.stringify({ notification_emails: enabled ? 1 : 0 }) });
+
+export const resendVerification = () =>
+  request<ApiResponse<null>>('/auth/resend-verification', { method: 'POST' });
 
 // Search
 export const search = (params: { q: string; community?: string; sort?: string; cursor?: string }) => {

@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS users (
   bio TEXT,
   karma INTEGER DEFAULT 0,
   is_admin INTEGER DEFAULT 0,
+  notification_emails INTEGER DEFAULT 1,
   created_at INTEGER NOT NULL,
   updated_at INTEGER NOT NULL
 );
@@ -138,6 +139,9 @@ CREATE INDEX IF NOT EXISTS idx_votes_target ON votes(target_id, target_type);
 CREATE VIRTUAL TABLE IF NOT EXISTS posts_fts USING fts5(
   title, body, content='posts', content_rowid='rowid'
 );
+
+-- Migrations
+ALTER TABLE users ADD COLUMN notification_emails INTEGER DEFAULT 1;
 
 -- Seed communities
 INSERT OR IGNORE INTO communities (id, slug, name, description, member_count, post_count, created_at) VALUES
