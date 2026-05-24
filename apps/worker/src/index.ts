@@ -18,6 +18,7 @@ export type Env = {
   FRONTEND_URL: string;
   MAILGUN_API_KEY: string;
   MAILGUN_DOMAIN: string;
+  R2_PUBLIC_URL: string;
 };
 
 const app = new Hono<{ Bindings: Env }>();
