@@ -98,7 +98,13 @@ export const updateNotificationSettings = (enabled: boolean) =>
   request<ApiResponse<User>>('/users/me', { method: 'PATCH', body: JSON.stringify({ notification_emails: enabled ? 1 : 0 }) });
 
 export const resendVerification = () =>
-  request<ApiResponse<null>>('/auth/resend-verification', { method: 'POST' });
+  request<ApiResponse<{ message: string }>>('/auth/resend-verification', { method: 'POST' });
+
+export const verifyEmail = (token: string) =>
+  request<ApiResponse<{ message: string }>>('/auth/verify-email', {
+    method: 'POST',
+    body: JSON.stringify({ token }),
+  });
 
 // Search
 export const search = (params: { q: string; community?: string; sort?: string; cursor?: string }) => {

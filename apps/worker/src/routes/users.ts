@@ -149,22 +149,38 @@ users.get('/:username/comments', async (c) => {
   return c.json({ success: true, data: { data, cursor: nextCursor, hasMore } });
 });
 
-// PATCH /users/me — update bio
+// PATCH /users/me — update profile fields
 users.patch('/me', authMiddleware, async (c) => {
   const userId = c.get('userId');
-  const body = await c.req.json<{ bio?: string }>();
+  const body = await c.req.json<{ bio?: string; notification_emails?: number }>();
 
   if (body.bio !== undefined && body.bio.length > 500) {
     return c.json({ success: false, error: 'Bio must be 500 characters or fewer' }, 400);
   }
 
   const now = Math.floor(Date.now() / 1000);
+
+  // Build dynamic update
+  const updates: string[] = ['updated_at = ?'];
+  const params: (string | number | null)[] = [now];
+
+  if (body.bio !== undefined) {
+    updates.push('bio = ?');
+    params.push(body.bio || null);
+  }
+  if (body.notification_emails !== undefined) {
+    updates.push('notification_emails = ?');
+    params.push(body.notification_emails ? 1 : 0);
+  }
+
+  params.push(userId as string);
+
   await c.env.DB.prepare(
-    'UPDATE users SET bio = ?, updated_at = ? WHERE id = ?'
-  ).bind(body.bio ?? null, now, userId).run();
+    `UPDATE users SET ${updates.join(', ')} WHERE id = ?`
+  ).bind(...params).run();
 
   const user = await c.env.DB.prepare(
-    'SELECT id, username, email, email_verified, avatar_url, bio, karma, is_admin, created_at, updated_at FROM users WHERE id = ?'
+    'SELECT id, username, email, email_verified, avatar_url, bio, karma, is_admin, notification_emails, created_at, updated_at FROM users WHERE id = ?'
   ).bind(userId).first();
 
   return c.json({ success: true, data: user });
@@ -185,7 +201,7 @@ users.post('/me/avatar', authMiddleware, async (c) => {
   ).bind(body.avatar_url, now, userId).run();
 
   const user = await c.env.DB.prepare(
-    'SELECT id, username, email, email_verified, avatar_url, bio, karma, is_admin, created_at, updated_at FROM users WHERE id = ?'
+    'SELECT id, username, email, email_verified, avatar_url, bio, karma, is_admin, notification_emails, created_at, updated_at FROM users WHERE id = ?'
   ).bind(userId).first();
 
   return c.json({ success: true, data: user });

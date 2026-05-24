@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { register } from '@/lib/api';
+import { register, resendVerification } from '@/lib/api';
 import { setToken } from '@/lib/auth';
 
 export default function RegisterPage() {
@@ -12,6 +12,10 @@ export default function RegisterPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [pending, setPending] = useState(false);
+  const [registered, setRegistered] = useState(false);
+  const [registeredEmail, setRegisteredEmail] = useState('');
+  const [resendPending, setResendPending] = useState(false);
+  const [resendSent, setResendSent] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -22,12 +26,62 @@ export default function RegisterPage() {
       const res = await register({ username, email, password });
       if (res.data) {
         setToken(res.data.token);
-        router.push('/');
-        router.refresh();
+        setRegisteredEmail(email);
+        setRegistered(true);
       }
     } catch (err: any) {
       setError(err.message ?? 'Registration failed');
     } finally { setPending(false); }
+  }
+
+  async function handleResend() {
+    setResendPending(true);
+    try {
+      await resendVerification();
+      setResendSent(true);
+    } catch {
+      // Silently fail — resend doesn't surface errors to user
+    } finally {
+      setResendPending(false);
+    }
+  }
+
+  if (registered) {
+    return (
+      <div className="min-h-screen flex items-center justify-center px-4">
+        <div className="bg-white rounded-xl border border-gray-200 p-8 w-full max-w-sm shadow-sm text-center">
+          <div className="text-5xl mb-4">📬</div>
+          <h1 className="font-display font-bold text-2xl mb-2">Check your email!</h1>
+          <p className="text-sm text-muted mb-1">
+            We've sent a verification link to:
+          </p>
+          <p className="text-sm font-medium text-[#1A1A1A] mb-4">{registeredEmail}</p>
+          <p className="text-sm text-muted mb-6">
+            Click the link in the email to verify your account. You can still browse Hiaisha — some features require a verified email.
+          </p>
+          <button
+            onClick={() => router.push('/')}
+            className="w-full py-2.5 bg-primary text-white rounded-lg font-medium hover:bg-primary-dark mb-3"
+          >
+            Go to Hiaisha →
+          </button>
+          <div className="border-t border-gray-200 pt-3">
+            <p className="text-xs text-muted mb-2">Didn't get the email?</p>
+            {resendSent ? (
+              <p className="text-xs text-green-600 font-medium">Email resent! Check your inbox (and spam folder).</p>
+            ) : (
+              <button
+                onClick={handleResend}
+                disabled={resendPending}
+                className="text-sm text-primary hover:underline disabled:opacity-50"
+              >
+                {resendPending ? 'Sending...' : 'Resend verification email'}
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (
