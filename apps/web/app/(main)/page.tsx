@@ -1,8 +1,38 @@
 import { Suspense } from 'react';
+import type { Metadata } from 'next';
 import { FeedTabs } from '@/components/posts/FeedTabs';
 import { PostFeed } from '@/components/posts/PostFeed';
 import { CommunityCard } from '@/components/communities/CommunityCard';
 import { getPosts, getCommunities } from '@/lib/api';
+
+export const metadata: Metadata = {
+  title: 'Hiaisha — Malaysian Food Community',
+  description:
+    'Discover the best makan spots in Malaysia. Share food finds, discuss hawker stalls, and connect with the Malaysian food community.',
+  openGraph: {
+    title: 'Hiaisha — Malaysian Food Community',
+    description:
+      'Discover the best makan spots in Malaysia. Share food finds, discuss hawker stalls, and connect with the Malaysian food community.',
+    url: 'https://hiaisha.com',
+    siteName: 'Hiaisha',
+    type: 'website',
+    images: [
+      {
+        url: '/og-default.png',
+        width: 1200,
+        height: 630,
+        alt: 'Hiaisha — Malaysian Food Community',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Hiaisha — Malaysian Food Community',
+    description:
+      'Discover the best makan spots in Malaysia. Share food finds, discuss hawker stalls, and connect with the Malaysian food community.',
+    images: ['/og-default.png'],
+  },
+};
 
 async function HomeFeed({ sort, time }: { sort: string; time: string }) {
   try {

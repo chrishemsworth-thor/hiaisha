@@ -1,9 +1,56 @@
 import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
+import type { Metadata } from 'next';
 import { FeedTabs } from '@/components/posts/FeedTabs';
 import { PostFeed } from '@/components/posts/PostFeed';
 import { CommunitySidebar } from '@/components/communities/CommunitySidebar';
 import { getCommunity, getCommunityPosts } from '@/lib/api';
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}): Promise<Metadata> {
+  try {
+    const res = await getCommunity(params.slug);
+    const community = res.data;
+    if (!community) return {};
+
+    const title = `${community.name} — Hiaisha`;
+    const description =
+      community.description ||
+      `Join the ${community.name} community on Hiaisha. Discover Malaysian food discussions, reviews, and makan spots.`;
+    const ogImage = community.banner_url ?? '/og-default.png';
+
+    return {
+      title,
+      description,
+      openGraph: {
+        title,
+        description,
+        url: `https://hiaisha.com/c/${params.slug}`,
+        siteName: 'Hiaisha',
+        type: 'website',
+        images: [
+          {
+            url: ogImage,
+            width: 1200,
+            height: 630,
+            alt: community.name,
+          },
+        ],
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title,
+        description,
+        images: [ogImage],
+      },
+    };
+  } catch {
+    return {};
+  }
+}
 
 async function CommunityPosts({ slug, sort, time }: { slug: string; sort: string; time: string }) {
   try {

@@ -1,0 +1,29 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Hiaisha Worker — .dev.vars.example
+#
+# Wrangler reads `.dev.vars` for local `wrangler dev` secrets (never committed).
+# Copy this file to `.dev.vars` and fill in real values before running locally.
+# In production, set these via `wrangler secret put <KEY>` or the
+# Cloudflare dashboard (Workers → Settings → Variables & Secrets).
+# ─────────────────────────────────────────────────────────────────────────────
+
+# JWT signing secret — used to sign and verify auth tokens.
+# Generate a strong random string (e.g. `openssl rand -hex 32`).
+# MUST be changed from this placeholder in every environment.
+JWT_SECRET=change-me-to-a-strong-random-secret
+
+# Allowed origin for CORS — set to the URL of the Next.js frontend.
+# Local dev:  http://localhost:3000
+# Production: https://hiaisha.com
+FRONTEND_URL=http://localhost:3000
+
+# Public base URL of the Cloudflare R2 bucket (no trailing slash).
+# Either a custom domain mapped to the bucket or the R2 public bucket URL.
+# Example custom domain:  https://images.hiaisha.com
+# Example R2 public URL:  https://pub-<hash>.r2.dev
+R2_PUBLIC_URL=https://images.hiaisha.com
+
+# Resend API key — used to send transactional emails
+# (password reset, notification digests, moderation notices).
+# Obtain from https://resend.com/api-keys
+RESEND_API_KEY=re_xxxxxxxxxxxxxxxxxxxxxxxxxxxx

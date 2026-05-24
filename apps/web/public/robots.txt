@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /mod/
+
+Sitemap: https://hiaisha.com/sitemap.xml
