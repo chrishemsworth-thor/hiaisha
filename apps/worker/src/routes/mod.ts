@@ -6,6 +6,7 @@ type Env = {
   IMAGES: R2Bucket;
   JWT_SECRET: string;
   FRONTEND_URL: string;
+  R2_PUBLIC_URL: string;
 };
 
 type Variables = {
@@ -165,9 +166,20 @@ mod.get('/admin/reports', authMiddleware, async (c) => {
   const limit = Math.min(parseInt(c.req.query('limit') ?? '50'), 100);
 
   let query = `
-    SELECT r.*, ua.username as reporter_username
+    SELECT r.*,
+      ua.username as reporter_username,
+      CASE
+        WHEN r.target_type = 'post' THEN p.author_id
+        WHEN r.target_type = 'comment' THEN cm.author_id
+      END as target_author_id,
+      CASE
+        WHEN r.target_type = 'post' THEN p.title
+        WHEN r.target_type = 'comment' THEN SUBSTR(cm.body, 1, 120)
+      END as target_preview
     FROM reports r
     LEFT JOIN users ua ON r.reporter_id = ua.id
+    LEFT JOIN posts p ON r.target_type = 'post' AND r.target_id = p.id
+    LEFT JOIN comments cm ON r.target_type = 'comment' AND r.target_id = cm.id
     WHERE r.resolved = 0
   `;
   const params: (string | number)[] = [];
@@ -183,6 +195,7 @@ mod.get('/admin/reports', authMiddleware, async (c) => {
   const result = await c.env.DB.prepare(query).bind(...params).all<{
     id: string; reporter_id: string; target_id: string; target_type: string;
     reason: string; resolved: number; created_at: number; reporter_username: string;
+    target_author_id: string | null; target_preview: string | null;
   }>();
 
   const rows = result.results ?? [];
@@ -192,6 +205,58 @@ mod.get('/admin/reports', authMiddleware, async (c) => {
   const nextCursor = hasMore && rows.length > 0 ? String(rows[rows.length - 1].created_at) : null;
 
   return c.json({ success: true, data: { data: rows, cursor: nextCursor, hasMore } });
+});
+
+// POST /admin/reports/:id/resolve — resolve/dismiss a report (admin only)
+mod.post('/admin/reports/:id/resolve', authMiddleware, async (c) => {
+  const user = c.get('user');
+  if (!user || user.is_admin !== 1) {
+    return c.json({ success: false, error: 'Admin access required' }, 403);
+  }
+
+  const reportId = c.req.param('id');
+  const now = Math.floor(Date.now() / 1000);
+
+  const result = await c.env.DB.prepare(
+    'UPDATE reports SET resolved = 1 WHERE id = ? AND resolved = 0'
+  ).bind(reportId).run();
+
+  if (!result.meta.changes) {
+    return c.json({ success: false, error: 'Report not found or already resolved' }, 404);
+  }
+
+  return c.json({ success: true, data: { message: 'Report resolved' } });
+});
+
+// POST /admin/users/:id/ban — global user ban (admin only)
+mod.post('/admin/users/:id/ban', authMiddleware, async (c) => {
+  const user = c.get('user');
+  if (!user || user.is_admin !== 1) {
+    return c.json({ success: false, error: 'Admin access required' }, 403);
+  }
+
+  const targetUserId = c.req.param('id');
+
+  // Prevent admins from banning themselves
+  if (targetUserId === user.sub) {
+    return c.json({ success: false, error: 'Cannot ban yourself' }, 400);
+  }
+
+  const target = await c.env.DB.prepare(
+    'SELECT id, is_admin FROM users WHERE id = ?'
+  ).bind(targetUserId).first<{ id: string; is_admin: number }>();
+
+  if (!target) return c.json({ success: false, error: 'User not found' }, 404);
+  if (target.is_admin === 1) {
+    return c.json({ success: false, error: 'Cannot ban another admin' }, 400);
+  }
+
+  const now = Math.floor(Date.now() / 1000);
+  await c.env.DB.prepare(
+    'UPDATE users SET is_banned = 1, updated_at = ? WHERE id = ?'
+  ).bind(now, targetUserId).run();
+
+  return c.json({ success: true, data: { message: 'User banned globally' } });
 });
 
 export default mod;

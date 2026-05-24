@@ -56,6 +56,11 @@ export function Navbar() {
               <Link href={`/u/${user.username}`} className="text-sm font-medium text-[#1A1A1A] hover:text-primary">
                 {user.username}
               </Link>
+              {user.is_admin === 1 && (
+                <Link href="/admin" className="text-sm font-semibold text-primary hover:text-primary-dark">
+                  Admin
+                </Link>
+              )}
               <Link href="/settings" className="text-sm text-muted hover:text-primary">
                 Settings
               </Link>

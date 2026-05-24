@@ -120,6 +120,51 @@ export const markAllNotificationsRead = () =>
 export const markNotificationRead = (id: string) =>
   request<ApiResponse<null>>(`/notifications/${id}/read`, { method: 'PATCH' });
 
+// Moderation
+export type PostReport = {
+  id: string; reporter_id: string; target_id: string; target_type: 'post';
+  reason: string; resolved: number; created_at: number;
+  target_title: string; target_author_id: string; reporter_username: string;
+};
+export type CommentReport = {
+  id: string; reporter_id: string; target_id: string; target_type: 'comment';
+  reason: string; resolved: number; created_at: number;
+  target_body: string; target_author_id: string; reporter_username: string;
+};
+export type AdminReport = {
+  id: string; reporter_id: string; target_id: string; target_type: 'post' | 'comment';
+  reason: string; resolved: number; created_at: number; reporter_username: string;
+  target_author_id: string | null; target_preview: string | null;
+};
+
+export const getModQueue = (slug: string) =>
+  request<ApiResponse<{ post_reports: PostReport[]; comment_reports: CommentReport[] }>>(
+    `/mod/${slug}/queue`
+  );
+
+export const modRemovePost = (postId: string) =>
+  request<ApiResponse<{ message: string }>>(`/mod/posts/${postId}/remove`, { method: 'POST' });
+
+export const modPinPost = (postId: string) =>
+  request<ApiResponse<{ is_pinned: number }>>(`/mod/posts/${postId}/pin`, { method: 'POST' });
+
+export const modBanUserFromCommunity = (userId: string, communitySlug: string) =>
+  request<ApiResponse<{ message: string }>>(`/mod/users/${userId}/ban`, {
+    method: 'POST',
+    body: JSON.stringify({ community_slug: communitySlug }),
+  });
+
+export const getAdminReports = (cursor?: string) => {
+  const q = cursor ? `?cursor=${cursor}` : '';
+  return request<ApiResponse<PaginatedResponse<AdminReport>>>(`/mod/admin/reports${q}`);
+};
+
+export const resolveReport = (reportId: string) =>
+  request<ApiResponse<{ message: string }>>(`/mod/admin/reports/${reportId}/resolve`, { method: 'POST' });
+
+export const globalBanUser = (userId: string) =>
+  request<ApiResponse<{ message: string }>>(`/mod/admin/users/${userId}/ban`, { method: 'POST' });
+
 // Upload
 export const uploadImage = async (file: File): Promise<string> => {
   const token = getToken();

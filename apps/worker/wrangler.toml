@@ -14,3 +14,4 @@ bucket_name = "hiaisha-images"
 [vars]
 JWT_SECRET = "change-me-in-production"
 FRONTEND_URL = "http://localhost:3000"
+R2_PUBLIC_URL = "https://images.hiaisha.com"

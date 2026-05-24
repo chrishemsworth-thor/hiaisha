@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { formatDistanceToNow } from 'date-fns';
 import { joinCommunity, leaveCommunity } from '@/lib/api';
-import { isLoggedIn } from '@/lib/auth';
+import { isLoggedIn, getCurrentUser } from '@/lib/auth';
 import type { Community } from '@hiaisha/types';
 
 interface Props {
@@ -14,6 +14,8 @@ export function CommunitySidebar({ community }: Props) {
   const [isMember, setIsMember] = useState(community.is_member ?? false);
   const [loading, setLoading] = useState(false);
   const loggedIn = isLoggedIn();
+  const currentUser = getCurrentUser();
+  const isAdmin = currentUser?.is_admin === 1;
 
   async function handleJoin() {
     if (!loggedIn || loading) return;
@@ -78,6 +80,14 @@ export function CommunitySidebar({ community }: Props) {
               >
                 Post in this community
               </Link>
+              {isAdmin && (
+                <Link
+                  href={`/mod/${community.slug}`}
+                  className="block w-full py-2 text-sm text-center border border-gray-300 text-gray-600 rounded-full hover:border-primary hover:text-primary font-medium"
+                >
+                  🛡 Mod Queue
+                </Link>
+              )}
             </>
           ) : (
             <Link

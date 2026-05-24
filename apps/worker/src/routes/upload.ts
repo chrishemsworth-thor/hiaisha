@@ -7,6 +7,7 @@ type Env = {
   IMAGES: R2Bucket;
   JWT_SECRET: string;
   FRONTEND_URL: string;
+  R2_PUBLIC_URL: string;
 };
 
 type Variables = {
@@ -48,8 +49,8 @@ upload.post('/image', authMiddleware, async (c) => {
     },
   });
 
-  // Build public URL — assumes R2 custom domain or public bucket URL
-  const bucketUrl = `https://images.hiaisha.com/${key}`;
+  // Build public URL from env var (set R2_PUBLIC_URL in wrangler.toml [vars])
+  const bucketUrl = `${c.env.R2_PUBLIC_URL}/${key}`;
 
   return c.json({ success: true, data: { url: bucketUrl, key } }, 201);
 });

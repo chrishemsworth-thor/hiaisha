@@ -142,6 +142,7 @@ CREATE VIRTUAL TABLE IF NOT EXISTS posts_fts USING fts5(
 
 -- Migrations
 ALTER TABLE users ADD COLUMN notification_emails INTEGER DEFAULT 1;
+ALTER TABLE users ADD COLUMN is_banned INTEGER DEFAULT 0;
 
 -- Seed communities
 INSERT OR IGNORE INTO communities (id, slug, name, description, member_count, post_count, created_at) VALUES
