@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { formatDistanceToNow } from 'date-fns';
 import { joinCommunity, leaveCommunity } from '@/lib/api';
-import { isLoggedIn, getCurrentUser } from '@/lib/auth';
+import { useAuth } from '@/lib/use-auth';
 import type { Community } from '@hiaisha/types';
 
 interface Props {
@@ -13,8 +13,7 @@ interface Props {
 export function CommunitySidebar({ community }: Props) {
   const [isMember, setIsMember] = useState(community.is_member ?? false);
   const [loading, setLoading] = useState(false);
-  const loggedIn = isLoggedIn();
-  const currentUser = getCurrentUser();
+  const { isLoggedIn: loggedIn, user: currentUser } = useAuth();
   const isAdmin = currentUser?.is_admin === 1;
 
   async function handleJoin() {

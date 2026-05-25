@@ -11,10 +11,11 @@ import { VoteButtons } from '@/components/ui/VoteButtons';
 import { CommentThread } from '@/components/comments/CommentThread';
 import { CommentBox } from '@/components/comments/CommentBox';
 import { getPost, getComments, createComment, votePost } from '@/lib/api';
-import { isLoggedIn } from '@/lib/auth';
+import { useAuth } from '@/lib/use-auth';
 import type { Post, Comment } from '@hiaisha/types';
 
 export default function PostPageClient({ params }: { params: { id: string } }) {
+  const { isLoggedIn: loggedIn } = useAuth();
   const [post, setPost] = useState<Post | null>(null);
   const [comments, setComments] = useState<Comment[]>([]);
   const [loading, setLoading] = useState(true);
@@ -70,7 +71,7 @@ export default function PostPageClient({ params }: { params: { id: string } }) {
     <div className="max-w-3xl mx-auto">
       <div className="bg-white rounded-card border border-gray-200 p-6 mb-4">
         <div className="flex gap-3">
-          <VoteButtons score={post.score} userVote={post.user_vote} onVote={handleVote} disabled={!isLoggedIn()} />
+          <VoteButtons score={post.score} userVote={post.user_vote} onVote={handleVote} disabled={!loggedIn} />
           <div className="flex-1 min-w-0">
             <div className="flex flex-wrap items-center gap-1.5 text-xs text-muted mb-2">
               {post.community && (
@@ -103,7 +104,7 @@ export default function PostPageClient({ params }: { params: { id: string } }) {
         </div>
       </div>
 
-      {isLoggedIn() && (
+      {loggedIn && (
         <div className="bg-white rounded-card border border-gray-200 p-4 mb-4">
           <h2 className="font-semibold text-sm mb-3">Leave a comment</h2>
           <CommentBox onSubmit={handleComment} />

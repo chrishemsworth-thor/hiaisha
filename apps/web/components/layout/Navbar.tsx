@@ -1,17 +1,15 @@
 'use client';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useState, useEffect } from 'react';
-import { getCurrentUser, removeToken } from '@/lib/auth';
-import type { User } from '@hiaisha/types';
+import { useState } from 'react';
+import { removeToken } from '@/lib/auth';
+import { useAuth } from '@/lib/use-auth';
 
 export function Navbar() {
   const router = useRouter();
-  const [user, setUser] = useState<Partial<User> | null>(null);
+  const { user } = useAuth();
   const [search, setSearch] = useState('');
   const [mobileOpen, setMobileOpen] = useState(false);
-
-  useEffect(() => { setUser(getCurrentUser()); }, []);
 
   function handleSearch(e: React.FormEvent) {
     e.preventDefault();
@@ -19,8 +17,7 @@ export function Navbar() {
   }
 
   function handleLogout() {
-    removeToken();
-    setUser(null);
+    removeToken(); // dispatches hiaisha-auth-change → useAuth sets user to null
     router.push('/');
   }
 

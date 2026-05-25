@@ -1,6 +1,7 @@
 import type { User } from '@hiaisha/types';
 
 const TOKEN_KEY = 'hiaisha_token';
+const AUTH_EVENT = 'hiaisha-auth-change';
 
 export function getToken(): string | null {
   if (typeof window === 'undefined') return null;
@@ -9,10 +10,12 @@ export function getToken(): string | null {
 
 export function setToken(token: string): void {
   localStorage.setItem(TOKEN_KEY, token);
+  window.dispatchEvent(new Event(AUTH_EVENT));
 }
 
 export function removeToken(): void {
   localStorage.removeItem(TOKEN_KEY);
+  window.dispatchEvent(new Event(AUTH_EVENT));
 }
 
 export function getCurrentUser(): Partial<User> | null {
