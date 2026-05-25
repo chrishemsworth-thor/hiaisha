@@ -19,7 +19,7 @@ export async function generateMetadata({
     const title = `${community.name} — Hiaisha`;
     const description =
       community.description ||
-      `Join the ${community.name} community on Hiaisha. Discover Malaysian food discussions, reviews, and makan spots.`;
+      `Join the ${community.name} community on Hiaisha. Discuss, share, and connect with Malaysians.`;
     const ogImage = community.banner_url ?? '/og-default.png';
 
     return {
