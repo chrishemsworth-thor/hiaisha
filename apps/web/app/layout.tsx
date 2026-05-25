@@ -11,12 +11,12 @@ const BASE_URL = 'https://hiaisha.com';
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
   title: {
-    default: 'Hiaisha — Malaysian Food Community',
+    default: 'Hiaisha — Malaysian Community',
     template: '%s — Hiaisha',
   },
   description:
-    'Where Malaysian food lovers gather. Discover hidden gems, share your makan finds, and connect with the community.',
-  keywords: ['Malaysian food', 'makan', 'food community', 'restaurant reviews', 'Malaysia'],
+    'The Malaysian community for everything — news, sports, tech, lifestyle, entertainment, and more. Cakap apa-apa, share apa-apa.',
+  keywords: ['Malaysia', 'Malaysian community', 'forum Malaysia', 'berita Malaysia', 'Malaysian Reddit'],
   authors: [{ name: 'Hiaisha' }],
   creator: 'Hiaisha',
   publisher: 'Hiaisha Technologies Sdn. Bhd.',
@@ -25,15 +25,15 @@ export const metadata: Metadata = {
     locale: 'en_MY',
     url: BASE_URL,
     siteName: 'Hiaisha',
-    title: 'Hiaisha — Malaysian Food Community',
+    title: 'Hiaisha — Malaysian Community',
     description:
-      'Where Malaysian food lovers gather. Discover hidden gems, share your makan finds, and connect with the community.',
+      'The Malaysian community for everything — news, sports, tech, lifestyle, entertainment, and more. Cakap apa-apa, share apa-apa.',
     images: [
       {
         url: '/og-default.png',
         width: 1200,
         height: 630,
-        alt: 'Hiaisha — Malaysian Food Community',
+        alt: 'Hiaisha — Malaysian Community',
       },
     ],
   },
@@ -41,9 +41,9 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     site: '@hiaisha',
     creator: '@hiaisha',
-    title: 'Hiaisha — Malaysian Food Community',
+    title: 'Hiaisha — Malaysian Community',
     description:
-      'Where Malaysian food lovers gather. Discover hidden gems, share your makan finds, and connect with the community.',
+      'The Malaysian community for everything — news, sports, tech, lifestyle, entertainment, and more. Cakap apa-apa, share apa-apa.',
     images: ['/og-default.png'],
   },
   robots: {
@@ -65,7 +65,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${sora.variable} ${plusJakarta.variable}`}>
+    <html lang="ms-MY" className={`${sora.variable} ${plusJakarta.variable}`}>
       <body className="min-h-screen bg-surface-bg font-body text-[#1A1A1A] dark:bg-[#1A1A1A] dark:text-[#FAFAF7]">
         <Navbar />
         <main className="max-w-6xl mx-auto px-4 py-6">{children}</main>

@@ -146,15 +146,15 @@ ALTER TABLE users ADD COLUMN is_banned INTEGER DEFAULT 0;
 
 -- Seed communities
 INSERT OR IGNORE INTO communities (id, slug, name, description, member_count, post_count, created_at) VALUES
-  ('comm_kl', 'kuala-lumpur', 'Kuala Lumpur', 'KL food scene — from KLCC to Chow Kit', 0, 0, unixepoch()),
-  ('comm_pg', 'penang', 'Penang', 'Penang food — the real hawker capital', 0, 0, unixepoch()),
-  ('comm_jb', 'johor-bahru', 'Johor Bahru', 'JB food + Singapore crossover eats', 0, 0, unixepoch()),
-  ('comm_ip', 'ipoh', 'Ipoh', 'Ipoh food — tau fu fah, dim sum, white coffee', 0, 0, unixepoch()),
-  ('comm_es', 'sabah-sarawak', 'Sabah & Sarawak', 'East Malaysia food gems', 0, 0, unixepoch()),
-  ('comm_sf', 'street-food', 'Street Food', 'Hawker stalls, pasar malam, roadside gems', 0, 0, unixepoch()),
-  ('comm_mm', 'mamak', 'Mamak', 'Mamak culture deserves its own space — roti canai, teh tarik', 0, 0, unixepoch()),
-  ('comm_bc', 'baking-cooking', 'Baking & Cooking', 'Home cooking, recipes, baking adventures', 0, 0, unixepoch()),
-  ('comm_hf', 'halal-finds', 'Halal Finds', 'Halal-certified recommendations across Malaysia', 0, 0, unixepoch()),
-  ('comm_be', 'budget-eats', 'Budget Eats', 'Cheap and good, under RM15', 0, 0, unixepoch()),
-  ('comm_no', 'new-openings', 'New Openings', 'Restaurant launches and new spots to try', 0, 0, unixepoch()),
-  ('comm_rp', 'rant-praise', 'Rant & Praise', 'Reviews, hot takes, and honest opinions', 0, 0, unixepoch());
+  ('comm_my', 'malaysia', 'Malaysia', 'Semua benda pasal Malaysia — boleh tanya, share, discuss apa-apa saja', 0, 0, unixepoch()),
+  ('comm_ns', 'berita-semasa', 'Berita Semasa', 'Latest Malaysian news, current affairs, and breaking stories', 0, 0, unixepoch()),
+  ('comm_pk', 'politik', 'Politik & PRU', 'Malaysian politics, elections, government policy — discuss dengan berhemah', 0, 0, unixepoch()),
+  ('comm_sp', 'sukan', 'Sukan', 'Harimau Malaya, badminton, F1, MotoGP — semua sukan ada di sini', 0, 0, unixepoch()),
+  ('comm_tx', 'teknologi', 'Teknologi & Gaming', 'Tech news, gadgets, gaming, apps, and all things digital', 0, 0, unixepoch()),
+  ('comm_hb', 'hiburan', 'Hiburan', 'Malaysian entertainment, K-drama, local films, music, and pop culture', 0, 0, unixepoch()),
+  ('comm_kw', 'kewangan', 'Kewangan & Pelaburan', 'Personal finance, KLSE, unit trusts, crypto, and investment talk', 0, 0, unixepoch()),
+  ('comm_pd', 'pendidikan', 'Pendidikan & Kerjaya', 'SPM, STPM, university, job hunting, career advice — tanya je lah', 0, 0, unixepoch()),
+  ('comm_gl', 'gaya-hidup', 'Gaya Hidup', 'Health, fitness, travel, parenting, fashion, and everyday Malaysian life', 0, 0, unixepoch()),
+  ('comm_mk', 'makan', 'Makan', 'Best makan spots, hawker stalls, recipes, and food reviews across Malaysia', 0, 0, unixepoch()),
+  ('comm_mm', 'meme-malaysia', 'Meme Malaysia', 'Lawak, meme, viral content — asal ada unsur Malaysia boleh masuk', 0, 0, unixepoch()),
+  ('comm_rp', 'rant-praise', 'Rant & Lepas Geram', 'Hot takes, rants, praise, unpopular opinions — lepas je lah');

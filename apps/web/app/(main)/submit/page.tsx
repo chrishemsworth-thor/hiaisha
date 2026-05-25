@@ -185,7 +185,7 @@ export default function SubmitPage() {
             onChange={e => setTitle(e.target.value)}
             maxLength={300}
             className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-primary"
-            placeholder="What's the makan news?"
+            placeholder="What's on your mind?"
             required
           />
           <p className="text-xs text-muted mt-0.5 text-right">{title.length}/300</p>
@@ -299,7 +299,7 @@ export default function SubmitPage() {
               value={tags}
               onChange={e => setTags(e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-primary"
-              placeholder="nasi lemak, must try"
+              placeholder="e.g. viral, panas, opinion"
             />
           </div>
         </div>
