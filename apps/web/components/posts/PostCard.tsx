@@ -6,7 +6,7 @@ import { VoteButtons } from '../ui/VoteButtons';
 import { TagBadge } from '../ui/TagBadge';
 import { LocationBadge } from '../ui/LocationBadge';
 import { votePost } from '@/lib/api';
-import { isLoggedIn } from '@/lib/auth';
+import { useAuth } from '@/lib/use-auth';
 import { useState } from 'react';
 import type { Post } from '@hiaisha/types';
 
@@ -18,7 +18,7 @@ interface Props {
 export function PostCard({ post, onVote }: Props) {
   const [score, setScore] = useState(post.score);
   const [userVote, setUserVote] = useState<1 | -1 | null>(post.user_vote ?? null);
-  const loggedIn = isLoggedIn();
+  const { isLoggedIn: loggedIn } = useAuth();
 
   async function handleVote(value: 1 | -1) {
     if (!loggedIn) return;

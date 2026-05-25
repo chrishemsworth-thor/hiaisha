@@ -6,7 +6,7 @@ import { VoteButtons } from '@/components/ui/VoteButtons';
 import { UserAvatar } from '@/components/ui/UserAvatar';
 import { CommentBox } from './CommentBox';
 import { voteComment, createComment } from '@/lib/api';
-import { isLoggedIn } from '@/lib/auth';
+import { useAuth } from '@/lib/use-auth';
 import type { Comment } from '@hiaisha/types';
 
 interface Props {
@@ -19,6 +19,7 @@ export function CommentThread({ comment: initialComment, postId, depth = 0 }: Pr
   const [comment, setComment] = useState(initialComment);
   const [showReply, setShowReply] = useState(false);
   const [replies, setReplies] = useState(initialComment.replies ?? []);
+  const { isLoggedIn: loggedIn } = useAuth();
 
   async function handleVote(value: 1 | -1) {
     await voteComment(comment.id, value);
@@ -49,7 +50,7 @@ export function CommentThread({ comment: initialComment, postId, depth = 0 }: Pr
   return (
     <div className={`${depth > 0 ? 'ml-4 pl-3 border-l-2 border-gray-100' : ''} py-2`}>
       <div className="flex gap-2">
-        <VoteButtons score={comment.score} userVote={comment.user_vote} onVote={handleVote} disabled={!isLoggedIn()} />
+        <VoteButtons score={comment.score} userVote={comment.user_vote} onVote={handleVote} disabled={!loggedIn} />
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 text-xs text-muted mb-1">
             {comment.author && (
@@ -63,7 +64,7 @@ export function CommentThread({ comment: initialComment, postId, depth = 0 }: Pr
             <span>{formatDistanceToNow(new Date(comment.created_at * 1000), { addSuffix: true })}</span>
           </div>
           <p className="text-sm text-[#1A1A1A] whitespace-pre-line">{comment.body}</p>
-          {isLoggedIn() && depth < 3 && (
+          {loggedIn && depth < 3 && (
             <button onClick={() => setShowReply(v => !v)} className="text-xs text-muted hover:text-primary mt-1">
               Reply
             </button>

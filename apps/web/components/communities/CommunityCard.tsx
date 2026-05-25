@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { joinCommunity, leaveCommunity } from '@/lib/api';
-import { isLoggedIn } from '@/lib/auth';
+import { useAuth } from '@/lib/use-auth';
 import type { Community } from '@hiaisha/types';
 
 interface Props {
@@ -12,7 +12,7 @@ interface Props {
 export function CommunityCard({ community }: Props) {
   const [isMember, setIsMember] = useState(community.is_member ?? false);
   const [loading, setLoading] = useState(false);
-  const loggedIn = isLoggedIn();
+  const { isLoggedIn: loggedIn } = useAuth();
 
   async function handleJoin(e: React.MouseEvent) {
     e.preventDefault();
