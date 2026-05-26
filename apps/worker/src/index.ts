@@ -26,7 +26,13 @@ const app = new Hono<{ Bindings: Env }>();
 // CORS middleware
 app.use('*', async (c, next) => {
   const handler = cors({
-    origin: [c.env.FRONTEND_URL, 'http://localhost:3000', 'http://localhost:3001'],
+    origin: [
+      c.env.FRONTEND_URL,
+      'http://localhost:3000',
+      'http://localhost:3001',
+      'http://127.0.0.1:3000',
+      'http://127.0.0.1:3001',
+    ],
     allowMethods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
     allowHeaders: ['Content-Type', 'Authorization'],
     exposeHeaders: ['Content-Length'],
