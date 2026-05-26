@@ -1,0 +1,52 @@
+{
+  "name": "Hiaisha",
+  "short_name": "Hiaisha",
+  "description": "Tempat orang Malaysia kumpul, share cerita, dan lepak.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F5F4F0",
+  "theme_color": "#4F3DE0",
+  "lang": "ms-MY",
+  "categories": ["social", "news"],
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/og-default.png",
+      "sizes": "1200x630",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Hiaisha home feed"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Submit post",
+      "short_name": "Post",
+      "description": "Share something with the community",
+      "url": "/submit",
+      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Browse Topik",
+      "short_name": "Topik",
+      "description": "Browse all 12 communities",
+      "url": "/communities",
+      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}
