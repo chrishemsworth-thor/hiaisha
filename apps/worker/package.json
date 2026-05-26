@@ -5,7 +5,10 @@
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",
-    "db:migrate": "wrangler d1 execute hiaisha --file=src/db/schema.sql"
+    "db:migrate": "wrangler d1 execute hiaisha --remote --file=src/db/schema.sql",
+    "db:migrate:local": "wrangler d1 execute hiaisha --local --file=src/db/schema.sql",
+    "db:reset": "wrangler d1 execute hiaisha --remote --file=src/db/reset.sql",
+    "db:reset:local": "wrangler d1 execute hiaisha --local --file=src/db/reset.sql"
   },
   "dependencies": {
     "hono": "^4.4.0",

@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS users (
   updated_at INTEGER NOT NULL
 );
 
--- Communities (Makan Spots)
+-- Communities
 CREATE TABLE IF NOT EXISTS communities (
   id TEXT PRIMARY KEY,
   slug TEXT UNIQUE NOT NULL,
@@ -140,9 +140,9 @@ CREATE VIRTUAL TABLE IF NOT EXISTS posts_fts USING fts5(
   title, body, content='posts', content_rowid='rowid'
 );
 
--- Migrations
-ALTER TABLE users ADD COLUMN notification_emails INTEGER DEFAULT 1;
-ALTER TABLE users ADD COLUMN is_banned INTEGER DEFAULT 0;
+-- Migrations (already included in CREATE TABLE above — kept here for reference only)
+-- ALTER TABLE users ADD COLUMN notification_emails INTEGER DEFAULT 1;
+-- ALTER TABLE users ADD COLUMN is_banned INTEGER DEFAULT 0;
 
 -- Seed communities
 INSERT OR IGNORE INTO communities (id, slug, name, description, member_count, post_count, created_at) VALUES
