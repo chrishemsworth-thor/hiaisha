@@ -3,17 +3,81 @@
 @tailwind utilities;
 
 :root {
+  /* Primary — warm electric indigo */
+  --primary: #4F3DE0;
+  --primary-deep: #3A2BB8;
+  --primary-soft: #ECE9FC;
+
+  /* Secondary — turmeric gold */
+  --accent: #E8A020;
+  --accent-soft: #FBEFD3;
+
+  /* Chili — food community / hot badge */
+  --chili: #C0392B;
+  --chili-soft: #FBE9E5;
+
+  /* Pandan — community accent */
+  --pandan: #4F8A5B;
+  --pandan-soft: #E2EFE4;
+
+  /* Surfaces */
   --background: #F5F4F0;
   --foreground: #1A1A1A;
+  --surface: #FFFFFF;
+  --surface-2: #FAF8F3;
+
+  /* Borders */
+  --line: #ECE8DF;
+  --line-strong: #DDD7C9;
+
+  /* Text */
+  --text-muted: #6B7280;
+  --text-soft: #9CA3AF;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(60,40,20,0.04), 0 1px 1px rgba(60,40,20,0.03);
+  --shadow-md: 0 2px 6px rgba(60,40,20,0.06), 0 8px 24px -10px rgba(60,40,20,0.08);
+  --shadow-lg: 0 12px 32px -8px rgba(60,40,20,0.16);
 }
 
 .dark {
-  --background: #1A1A1A;
-  --foreground: #FAFAF7;
+  --primary: #8A7BF0;
+  --primary-deep: #6E5FE2;
+  --primary-soft: #221E45;
+
+  --accent: #F4B947;
+  --accent-soft: #2A2218;
+
+  --chili: #E66050;
+  --chili-soft: #2A1A18;
+
+  --pandan: #6FAE7E;
+  --pandan-soft: #1A2520;
+
+  --background: #18171C;
+  --foreground: #F3EFE6;
+  --surface: #221F28;
+  --surface-2: #2A2732;
+
+  --line: #2F2C38;
+  --line-strong: #3E3B49;
+
+  --text-muted: #9C968A;
+  --text-soft: #6E695F;
+
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.4);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.4);
+  --shadow-lg: 0 12px 32px rgba(0,0,0,0.5);
+}
+
+* {
+  box-sizing: border-box;
 }
 
 body {
   background-color: var(--background);
   color: var(--foreground);
-  font-family: var(--font-plus-jakarta), sans-serif;
+  font-family: var(--font-plus-jakarta), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "ss01", "cv11";
 }
