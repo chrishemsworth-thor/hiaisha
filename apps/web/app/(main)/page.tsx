@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { FeedTabs } from '@/components/posts/FeedTabs';
 import { PostFeed } from '@/components/posts/PostFeed';
 import { CommunityCard } from '@/components/communities/CommunityCard';
+import { WelcomeCard } from '@/components/communities/WelcomeCard';
 import { getPosts, getCommunities } from '@/lib/api';
 
 export const metadata: Metadata = {
@@ -57,47 +58,51 @@ async function TopCommunities() {
   }
 }
 
-export default function HomePage({ searchParams }: { searchParams: { sort?: string; time?: string } }) {
+export default function HomePage({
+  searchParams,
+}: {
+  searchParams: { sort?: string; time?: string };
+}) {
   const sort = searchParams.sort ?? 'hot';
   const time = searchParams.time ?? 'all';
 
   return (
     <div className="flex gap-6">
+      {/* ── Feed ── */}
       <div className="flex-1 min-w-0">
         <Suspense fallback={null}>
           <FeedTabs />
         </Suspense>
-        <div className="mt-4">
+        <div className="mt-4 space-y-3">
           <Suspense fallback={<PostFeed posts={[]} loading />}>
             <HomeFeed sort={sort} time={time} />
           </Suspense>
         </div>
       </div>
-      <aside className="w-72 shrink-0 hidden lg:block space-y-4">
-        {/* Welcome card */}
-        <div className="bg-white rounded-card border border-gray-200 p-4">
-          <div className="flex items-center gap-2 mb-2">
-            <span className="text-xl">🇲🇾</span>
-            <h2 className="font-display font-bold text-sm">Selamat datang ke Hiaisha</h2>
+
+      {/* ── Sidebar ── */}
+      <aside className="w-72 shrink-0 hidden lg:flex flex-col gap-4">
+        {/* Welcome card — shown to everyone; WelcomeCard is guest-aware */}
+        <WelcomeCard />
+
+        {/* Trending/top communities */}
+        <div className="bg-surface rounded-card border border-line shadow-warm-sm p-4">
+          <div className="flex items-center gap-2 mb-3">
+            <svg className="w-4 h-4 text-chili" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 3c1 4 4 5 4 9a4 4 0 0 1-8 0c0-2 1-3 2-4 0 2 1 3 2 3 0-3 0-5 0-8z" />
+            </svg>
+            <h2 className="font-display font-bold text-sm text-ink">Topik popular</h2>
           </div>
-          <p className="text-xs text-muted leading-relaxed">
-            Malaysia&apos;s community — discuss news, share opinions, laugh at memes, and connect with Malaysians everywhere. Cakap apa saja, bebas lah.
-          </p>
-          <div className="mt-3 flex gap-2">
-            <a href="/register" className="flex-1 text-center text-xs py-1.5 bg-primary text-white rounded-full font-medium hover:bg-primary-dark">
-              Join Free
-            </a>
-            <a href="/communities" className="flex-1 text-center text-xs py-1.5 border border-gray-300 rounded-full font-medium hover:border-primary hover:text-primary">
-              Browse
-            </a>
-          </div>
-        </div>
-        {/* Top communities */}
-        <div className="bg-white rounded-card border border-gray-200 p-4">
-          <h2 className="font-display font-semibold text-sm mb-3">Top Communities</h2>
           <Suspense fallback={null}>
             <TopCommunities />
           </Suspense>
+        </div>
+
+        {/* Footer links */}
+        <div className="text-xs text-ink-muted flex flex-wrap gap-x-3 gap-y-1 px-1">
+          <a href="/terms" className="hover:text-primary transition-colors">Terms</a>
+          <a href="/privacy" className="hover:text-primary transition-colors">Privacy</a>
+          <span>© 2026 Hiaisha</span>
         </div>
       </aside>
     </div>

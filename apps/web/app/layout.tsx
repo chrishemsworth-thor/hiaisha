@@ -1,10 +1,11 @@
 import type { Metadata } from 'next';
-import { Sora, Plus_Jakarta_Sans } from 'next/font/google';
+import { Sora, Plus_Jakarta_Sans, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
 import { Navbar } from '@/components/layout/Navbar';
 
-const sora = Sora({ subsets: ['latin'], variable: '--font-sora' });
-const plusJakarta = Plus_Jakarta_Sans({ subsets: ['latin'], variable: '--font-plus-jakarta' });
+const sora = Sora({ subsets: ['latin'], variable: '--font-sora', weight: ['400','500','600','700','800'] });
+const plusJakarta = Plus_Jakarta_Sans({ subsets: ['latin'], variable: '--font-plus-jakarta', weight: ['400','500','600','700'] });
+const jetbrainsMono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-jetbrains-mono', weight: ['400','500'] });
 
 const BASE_URL = 'https://hiaisha.com';
 
@@ -65,8 +66,11 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ms-MY" className={`${sora.variable} ${plusJakarta.variable}`}>
-      <body className="min-h-screen bg-surface-bg font-body text-[#1A1A1A] dark:bg-[#1A1A1A] dark:text-[#FAFAF7]">
+    <html
+      lang="ms-MY"
+      className={`${sora.variable} ${plusJakarta.variable} ${jetbrainsMono.variable}`}
+    >
+      <body className="min-h-screen bg-[var(--background)] font-body text-[var(--foreground)] antialiased">
         <Navbar />
         <main className="max-w-6xl mx-auto px-4 py-6">{children}</main>
       </body>

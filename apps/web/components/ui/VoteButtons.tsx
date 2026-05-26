@@ -23,31 +23,37 @@ export function VoteButtons({ score, userVote, onVote, disabled }: Props) {
       <button
         onClick={() => handleVote(1)}
         disabled={disabled || pending}
-        className={clsx('p-1 rounded hover:bg-orange-50 transition-colors', {
-          'text-primary': userVote === 1,
-          'text-muted hover:text-primary': userVote !== 1,
-        })}
-        title={disabled ? 'Login to vote' : 'Upvote'}
+        className={clsx(
+          'p-1 rounded transition-colors',
+          userVote === 1
+            ? 'text-primary'
+            : 'text-ink-muted hover:text-primary hover:bg-primary-50',
+        )}
+        title={disabled ? 'Log masuk untuk vote' : 'Upvote'}
       >
         <svg className="w-4 h-4" fill={userVote === 1 ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
         </svg>
       </button>
-      <span className={clsx('text-xs font-bold tabular-nums', {
-        'text-primary': userVote === 1,
+
+      <span className={clsx('text-xs font-bold tabular-nums font-display', {
+        'text-primary':  userVote === 1,
         'text-blue-500': userVote === -1,
-        'text-muted': !userVote,
+        'text-ink-muted': !userVote,
       })}>
-        {score}
+        {score >= 1000 ? `${(score / 1000).toFixed(1).replace(/\.0$/, '')}k` : score}
       </span>
+
       <button
         onClick={() => handleVote(-1)}
         disabled={disabled || pending}
-        className={clsx('p-1 rounded hover:bg-blue-50 transition-colors', {
-          'text-blue-500': userVote === -1,
-          'text-muted hover:text-blue-500': userVote !== -1,
-        })}
-        title={disabled ? 'Login to vote' : 'Downvote'}
+        className={clsx(
+          'p-1 rounded transition-colors',
+          userVote === -1
+            ? 'text-blue-500'
+            : 'text-ink-muted hover:text-blue-500 hover:bg-blue-50',
+        )}
+        title={disabled ? 'Log masuk untuk vote' : 'Downvote'}
       >
         <svg className="w-4 h-4" fill={userVote === -1 ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
