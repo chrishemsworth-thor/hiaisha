@@ -1,6 +1,7 @@
 import { Hono } from 'hono';
 import { generateId } from '../utils/id';
 import { authMiddleware, optionalAuthMiddleware } from '../middleware/auth';
+import { communityCreationRateLimit } from '../middleware/rateLimit';
 
 type Env = {
   DB: D1Database;
@@ -70,9 +71,30 @@ communities.get('/:slug', optionalAuthMiddleware, async (c) => {
   return c.json({ success: true, data: { ...community, is_member: isMember } });
 });
 
-// POST /communities — create community (any authenticated user)
-communities.post('/', authMiddleware, async (c) => {
+// POST /communities — create community (trusted, email-verified users only)
+communities.post('/', authMiddleware, communityCreationRateLimit, async (c) => {
   const userId = c.get('userId');
+
+  // Check email verification and trusted flag
+  const creator = await c.env.DB.prepare(
+    'SELECT email_verified, can_create_community FROM users WHERE id = ?'
+  ).bind(userId).first<{ email_verified: number; can_create_community: number }>();
+
+  if (!creator) return c.json({ success: false, error: 'User not found' }, 404);
+  if (!creator.email_verified) {
+    return c.json({ success: false, error: 'Email verification required to create a community' }, 403);
+  }
+  if (!creator.can_create_community) {
+    return c.json({ success: false, error: 'Your account is not yet approved to create communities' }, 403);
+  }
+
+  // Per-user community cap (max 5)
+  const countRow = await c.env.DB.prepare(
+    'SELECT COUNT(*) as count FROM communities WHERE created_by = ?'
+  ).bind(userId).first<{ count: number }>();
+  if ((countRow?.count ?? 0) >= 5) {
+    return c.json({ success: false, error: 'You have reached the maximum of 5 communities' }, 403);
+  }
 
   const body = await c.req.json<{ slug?: string; name?: string; description?: string }>();
   if (!body.slug || !body.name) {

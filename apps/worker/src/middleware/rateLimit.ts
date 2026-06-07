@@ -60,3 +60,19 @@ export function commentRateLimit(c: Context, next: Next): Promise<Response | voi
 
   return next();
 }
+
+/**
+ * 3 community creations per hour per user
+ */
+export function communityCreationRateLimit(c: Context, next: Next): Promise<Response | void> {
+  const userId = (c as any).get?.('userId') as string | undefined;
+  const key = `community_create:${userId ?? getIp(c)}`;
+
+  if (!checkLimit(key, 3, 3_600_000)) {
+    return Promise.resolve(
+      c.json({ success: false, error: 'Too many communities created — try again later' }, 429) as Response
+    );
+  }
+
+  return next();
+}

@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS users (
   bio TEXT,
   karma INTEGER DEFAULT 0,
   is_admin INTEGER DEFAULT 0,
+  can_create_community INTEGER DEFAULT 0,
   notification_emails INTEGER DEFAULT 1,
   created_at INTEGER NOT NULL,
   updated_at INTEGER NOT NULL
@@ -143,6 +144,7 @@ CREATE VIRTUAL TABLE IF NOT EXISTS posts_fts USING fts5(
 -- Migrations (already included in CREATE TABLE above — kept here for reference only)
 -- ALTER TABLE users ADD COLUMN notification_emails INTEGER DEFAULT 1;
 -- ALTER TABLE users ADD COLUMN is_banned INTEGER DEFAULT 0;
+-- ALTER TABLE users ADD COLUMN can_create_community INTEGER DEFAULT 0;
 
 -- Seed communities
 INSERT OR IGNORE INTO communities (id, slug, name, description, member_count, post_count, created_at) VALUES
