@@ -55,6 +55,14 @@ export function Navbar() {
           <HiaishaLogo />
         </Link>
 
+        {/* Desktop nav links */}
+        <Link
+          href="/communities"
+          className="hidden sm:inline-flex items-center text-sm font-medium text-ink-muted hover:text-primary transition-colors shrink-0"
+        >
+          Topik
+        </Link>
+
         {/* Search */}
         <form onSubmit={handleSearch} className="flex-1 max-w-md hidden sm:flex">
           <div className="relative w-full">
