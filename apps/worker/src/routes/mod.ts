@@ -228,6 +228,30 @@ mod.post('/admin/reports/:id/resolve', authMiddleware, async (c) => {
   return c.json({ success: true, data: { message: 'Report resolved' } });
 });
 
+// POST /admin/users/:id/trust — grant or revoke community creation privilege (admin only)
+mod.post('/admin/users/:id/trust', authMiddleware, async (c) => {
+  const user = c.get('user');
+  if (!user || user.is_admin !== 1) {
+    return c.json({ success: false, error: 'Admin access required' }, 403);
+  }
+
+  const targetUserId = c.req.param('id');
+  const body = await c.req.json<{ grant: boolean }>();
+  if (typeof body.grant !== 'boolean') {
+    return c.json({ success: false, error: 'grant (boolean) is required' }, 400);
+  }
+
+  const target = await c.env.DB.prepare('SELECT id FROM users WHERE id = ?').bind(targetUserId).first<{ id: string }>();
+  if (!target) return c.json({ success: false, error: 'User not found' }, 404);
+
+  const now = Math.floor(Date.now() / 1000);
+  await c.env.DB.prepare(
+    'UPDATE users SET can_create_community = ?, updated_at = ? WHERE id = ?'
+  ).bind(body.grant ? 1 : 0, now, targetUserId).run();
+
+  return c.json({ success: true, data: { can_create_community: body.grant } });
+});
+
 // POST /admin/users/:id/ban — global user ban (admin only)
 mod.post('/admin/users/:id/ban', authMiddleware, async (c) => {
   const user = c.get('user');
