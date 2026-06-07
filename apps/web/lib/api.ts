@@ -54,8 +54,8 @@ export const createPost = (body: {
   title: string; body?: string; post_type: 'text' | 'image';
   community_id: string; location_tag?: string; tags?: string[]; image_urls?: string[];
 }) => request<ApiResponse<Post>>('/posts', { method: 'POST', body: JSON.stringify(body) });
-export const votePost = (id: string, value: 1 | -1) =>
-  request<ApiResponse<null>>(`/posts/${id}/vote`, { method: 'POST', body: JSON.stringify({ value }) });
+export const votePost = (id: string, value: 1 | -1 | 0) =>
+  request<ApiResponse<{ score: number; user_vote: 1 | -1 | null } | { message: string }>>(`/posts/${id}/vote`, { method: 'POST', body: JSON.stringify({ value }) });
 export const reportPost = (id: string, reason: string) =>
   request<ApiResponse<null>>(`/posts/${id}/report`, { method: 'POST', body: JSON.stringify({ reason }) });
 

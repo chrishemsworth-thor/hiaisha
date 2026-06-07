@@ -33,7 +33,11 @@ export function PostCard({ post, onVote }: Props) {
     setScore(s => s + delta);
     setUserVote(newVote);
     try {
-      await votePost(post.id, value);
+      const res = await votePost(post.id, newVote ?? 0);
+      if (res.data && 'score' in res.data) {
+        setScore(res.data.score);
+        setUserVote(res.data.user_vote);
+      }
       onVote?.(post.id, value);
     } catch {
       setScore(prevScore);

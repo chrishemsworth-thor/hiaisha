@@ -34,12 +34,17 @@ export default function PostPageClient({ params }: { params: { id: string } }) {
 
   async function handleVote(value: 1 | -1) {
     if (!post) return;
-    await votePost(post.id, value);
-    setPost(p => p ? ({
-      ...p,
-      score: p.score + (value === p.user_vote ? -value : value - (p.user_vote ?? 0)),
-      user_vote: p.user_vote === value ? null : value,
-    }) : null);
+    const newVote = post.user_vote === value ? null : value;
+    const res = await votePost(post.id, newVote ?? 0);
+    setPost(p => {
+      if (!p) return null;
+      const data = res.data && 'score' in res.data ? res.data : null;
+      return {
+        ...p,
+        score: data ? data.score : p.score + ((newVote ?? 0) - (p.user_vote ?? 0)),
+        user_vote: data ? data.user_vote : newVote,
+      };
+    });
   }
 
   async function handleComment(body: string) {
