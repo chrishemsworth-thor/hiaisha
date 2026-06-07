@@ -70,12 +70,9 @@ communities.get('/:slug', optionalAuthMiddleware, async (c) => {
   return c.json({ success: true, data: { ...community, is_member: isMember } });
 });
 
-// POST /communities — create community (admin only)
+// POST /communities — create community (any authenticated user)
 communities.post('/', authMiddleware, async (c) => {
-  const user = c.get('user');
-  if (!user || user.is_admin !== 1) {
-    return c.json({ success: false, error: 'Admin access required' }, 403);
-  }
+  const userId = c.get('userId');
 
   const body = await c.req.json<{ slug?: string; name?: string; description?: string }>();
   if (!body.slug || !body.name) {
@@ -93,8 +90,13 @@ communities.post('/', authMiddleware, async (c) => {
   const now = Math.floor(Date.now() / 1000);
 
   await c.env.DB.prepare(
-    'INSERT INTO communities (id, slug, name, description, member_count, post_count, created_by, created_at) VALUES (?, ?, ?, ?, 0, 0, ?, ?)'
-  ).bind(id, body.slug, body.name, body.description ?? null, c.get('userId'), now).run();
+    'INSERT INTO communities (id, slug, name, description, member_count, post_count, created_by, created_at) VALUES (?, ?, ?, ?, 1, 0, ?, ?)'
+  ).bind(id, body.slug, body.name, body.description ?? null, userId, now).run();
+
+  // Auto-join creator as community admin
+  await c.env.DB.prepare(
+    "INSERT INTO community_members (user_id, community_id, role, joined_at) VALUES (?, ?, 'admin', ?)"
+  ).bind(userId, id, now).run();
 
   const created = await c.env.DB.prepare('SELECT * FROM communities WHERE id = ?').bind(id).first();
   return c.json({ success: true, data: created }, 201);
