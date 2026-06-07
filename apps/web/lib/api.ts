@@ -33,6 +33,8 @@ export const getMe = () => request<ApiResponse<User>>('/auth/me');
 // Communities
 export const getCommunities = () => request<ApiResponse<Community[]>>('/communities');
 export const getCommunity = (slug: string) => request<ApiResponse<Community>>(`/communities/${slug}`);
+export const createCommunity = (body: { slug: string; name: string; description?: string }) =>
+  request<ApiResponse<Community>>('/communities', { method: 'POST', body: JSON.stringify(body) });
 export const joinCommunity = (slug: string) =>
   request<ApiResponse<null>>(`/communities/${slug}/join`, { method: 'POST' });
 export const leaveCommunity = (slug: string) =>
