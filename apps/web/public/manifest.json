@@ -1,7 +1,7 @@
 {
   "name": "Hiaisha",
   "short_name": "Hiaisha",
-  "description": "Tempat orang Malaysia kumpul, share cerita, dan lepak.",
+  "description": "Where Malaysians come to lepak, share cerita, and cakap pasal apa-apa. News, sports, hiburan — semua ada.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Purple rounded background -->
+  <rect width="512" height="512" rx="88" fill="#4F3DE0"/>
+
+  <!-- 5 hibiscus petals in Malaysian red, radiating from center -->
+  <g transform="translate(256,256)">
+    <ellipse cx="0" cy="-148" rx="68" ry="124" fill="#CC0001"/>
+    <ellipse cx="0" cy="-148" rx="68" ry="124" fill="#CC0001" transform="rotate(72)"/>
+    <ellipse cx="0" cy="-148" rx="68" ry="124" fill="#CC0001" transform="rotate(144)"/>
+    <ellipse cx="0" cy="-148" rx="68" ry="124" fill="#CC0001" transform="rotate(216)"/>
+    <ellipse cx="0" cy="-148" rx="68" ry="124" fill="#CC0001" transform="rotate(288)"/>
+  </g>
+
+  <!-- White H letterform on top -->
+  <rect x="100" y="110" width="80" height="292" rx="14" fill="white"/>
+  <rect x="332" y="110" width="80" height="292" rx="14" fill="white"/>
+  <rect x="100" y="216" width="312" height="80" rx="14" fill="white"/>
+</svg>
