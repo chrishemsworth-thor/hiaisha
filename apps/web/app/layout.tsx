@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     template: '%s — Hiaisha',
   },
   description:
-    'The Malaysian community for everything — news, sports, tech, lifestyle, entertainment, and more. Cakap apa-apa, share apa-apa.',
+    'Where Malaysians come to lepak, share cerita, and cakap pasal apa-apa. News, sports, hiburan — semua ada.',
   keywords: ['Malaysia', 'Malaysian community', 'forum Malaysia', 'berita Malaysia', 'Malaysian Reddit'],
   authors: [{ name: 'Hiaisha' }],
   creator: 'Hiaisha',
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
     siteName: 'Hiaisha',
     title: 'Hiaisha — Malaysian Community',
     description:
-      'The Malaysian community for everything — news, sports, tech, lifestyle, entertainment, and more. Cakap apa-apa, share apa-apa.',
+      'Where Malaysians come to lepak, share cerita, and cakap pasal apa-apa. News, sports, hiburan — semua ada.',
     images: [
       {
         url: '/og-default.png',
@@ -61,7 +61,7 @@ export const metadata: Metadata = {
     creator: '@hiaisha',
     title: 'Hiaisha — Malaysian Community',
     description:
-      'The Malaysian community for everything — news, sports, tech, lifestyle, entertainment, and more. Cakap apa-apa, share apa-apa.',
+      'Where Malaysians come to lepak, share cerita, and cakap pasal apa-apa. News, sports, hiburan — semua ada.',
     images: ['/og-default.png'],
   },
   robots: {
@@ -77,6 +77,7 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
+      { url: '/favicon.svg', type: 'image/svg+xml' },
       { url: '/favicon.ico' },
       { url: '/icons/icon-192.png', sizes: '192x192', type: 'image/png' },
       { url: '/icons/icon-512.png', sizes: '512x512', type: 'image/png' },

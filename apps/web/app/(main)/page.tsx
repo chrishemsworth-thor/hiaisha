@@ -7,13 +7,12 @@ import { WelcomeCard } from '@/components/communities/WelcomeCard';
 import { getPosts, getCommunities } from '@/lib/api';
 
 export const metadata: Metadata = {
-  title: 'Hiaisha — Malaysian Community',
   description:
-    'Discover what Malaysians are talking about. Share news, opinions, memes, and stories — from KL to Kota Kinabalu.',
+    'Where Malaysians come to lepak, share cerita, and cakap pasal apa-apa. News, sports, hiburan — semua ada.',
   openGraph: {
     title: 'Hiaisha — Malaysian Community',
     description:
-      'Discover what Malaysians are talking about. Share news, opinions, memes, and stories — from KL to Kota Kinabalu.',
+      'Where Malaysians come to lepak, share cerita, and cakap pasal apa-apa. News, sports, hiburan — semua ada.',
     url: 'https://hiaisha.com',
     siteName: 'Hiaisha',
     type: 'website',
@@ -30,7 +29,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Hiaisha — Malaysian Community',
     description:
-      'Discover what Malaysians are talking about. Share news, opinions, memes, and stories — from KL to Kota Kinabalu.',
+      'Where Malaysians come to lepak, share cerita, and cakap pasal apa-apa. News, sports, hiburan — semua ada.',
     images: ['/og-default.png'],
   },
 };
